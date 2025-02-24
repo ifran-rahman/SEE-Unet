@@ -1,10 +1,6 @@
-# SEE-Unet
+# **Sqeeze-Expand-Excite: Efficient UNet for Cloud Segmentation**
 
-## Title
-**Sqeeze-Expand-Excite: Efficient UNet for Cloud Segmentation**
-
-## Authors
-Ifran Rahman Nijhum, Md Shihab Reza and Soumyabrata Dev
+### Ifran Rahman Nijhum, Md Shihab Reza and Soumyabrata Dev
 
 ## Abstract
 Cloud segmentation is vital for atmospheric observation and applications such as weather forecasting and solar forecasting. To date, many deep learning models for cloud segmentation have been proposed. However, there's a lack of studies on building efficient cloud segmentation networks facilitating deployment on edge devices. In this work, we propose SEE-Unet, an inspired version of the Squeeze U-Net and U-Net. Our SEE-Unet gains competitive performance while notably reducing computational complexity. Compared to U-Net, SEE U-Net reduces parameters by 96.7\% and FLOPs by over 56×. Against Squeeze U-Net, SEE U-Net achieves a 57\% reduction in parameters and a 41\% reduction in FLOPs. These results highlight the potential of SEE U-Net for lightweight, efficient cloud segmentation, particularly in resource-constrained environments.
@@ -43,8 +39,8 @@ If you use SEE-Unet in your research, please cite our work using the following B
 
 ```bibtex
 @unpublished{SEEUnet2025,
+  title={Sqeeze-Expand-Excite: Efficient UNet for Cloud Segmentation}, 
   author    = {Ifran Rahman Nijhum, Md Shihab Reza and Soumyabrata Dev},
-  title     = {Sqeeze-Expand-Excite: Efficient UNet for Cloud Segmentation},
   year      = {2025},
   note      = {Manuscript in preparation}
 }
@@ -54,10 +50,9 @@ If you use SEE-Unet in your research, please cite our work using the following B
 ## Contact
 For any inquiries or issues, please contact:
 
-- **Your Name**: your.email@example.com
-- **Project Repository**: [GitHub Repository](https://github.com/your-repo/SEE-Unet)
+- **Ifran Rahman Nijhum**: ifran.nijhum@ucdconnect.ie
+- **Project Repository**: [GitHub Repository](https://github.com/ifran-rahman/SEE-Unet)
 
 ---
 
-Feel free to update placeholders (e.g., images, repository links, author details) with actual content before publishing!
 

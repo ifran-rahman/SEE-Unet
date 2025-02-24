@@ -25,13 +25,13 @@ def squeeze_and_excite(x, filters, se_ratio=16):
     x = multiply([x, se])  
     
     return x
-
-def SEE_Block(x, fire_id, squeeze=16, expand=64, se_ratio=16):
+see
+def SEE_Block(x, see_id, squeeze=16, expand=64, se_ratio=16):
     """ SEE Block with Unique Layer Naming """
     
     # Generate unique name for each layer
     def unique_layer_name(name):
-        return f"fire{fire_id}_{name}"
+        return f"see{see_id}_{name}"
 
     channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
 
@@ -65,22 +65,22 @@ def SEE_Unet(inputs, num_classes=1, deconv_ksize=3, dropout=0.5, activation='sig
     x02 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), name='pool1', padding='same')(x01)
 
     # DS1
-    x03 = SEE_Block(x02, fire_id=2, squeeze=16, expand=64)
-    x04 = SEE_Block(x03, fire_id=3, squeeze=16, expand=64)
+    x03 = SEE_Block(x02, see_id=2, squeeze=16, expand=64)
+    x04 = SEE_Block(x03, see_id=3, squeeze=16, expand=64)
     x05 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), name='pool3', padding="same")(x04)
 
     # DS2    
-    x06 = SEE_Block(x05, fire_id=4, squeeze=32, expand=128)
-    x07 = SEE_Block(x06, fire_id=5, squeeze=32, expand=128)
+    x06 = SEE_Block(x05, see_id=4, squeeze=32, expand=128)
+    x07 = SEE_Block(x06, see_id=5, squeeze=32, expand=128)
     x08 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), name='pool5', padding="same")(x07)
 
     # DS3
-    x09 = SEE_Block(x08, fire_id=6, squeeze=48, expand=192)
-    x10 = SEE_Block(x09, fire_id=7, squeeze=48, expand=192)
+    x09 = SEE_Block(x08, see_id=6, squeeze=48, expand=192)
+    x10 = SEE_Block(x09, see_id=7, squeeze=48, expand=192)
 
     # DS4
-    x11 = SEE_Block(x10, fire_id=8, squeeze=64, expand=256)
-    x12 = SEE_Block(x11, fire_id=9, squeeze=64, expand=256)
+    x11 = SEE_Block(x10, see_id=8, squeeze=64, expand=256)
+    x12 = SEE_Block(x11, see_id=9, squeeze=64, expand=256)
 
     if dropout != 0.0:
         x12 = Dropout(dropout)(x12)
@@ -90,28 +90,28 @@ def SEE_Unet(inputs, num_classes=1, deconv_ksize=3, dropout=0.5, activation='sig
         Conv2DTranspose(192, deconv_ksize, strides=(1, 1), padding='same')(x12),
         x10,
     ], axis=channel_axis)
-    up1 = SEE_Block(up1, fire_id=10, squeeze=48, expand=192)
+    up1 = SEE_Block(up1, see_id=10, squeeze=48, expand=192)
 
     # US2
     up2 = concatenate([
         Conv2DTranspose(128, deconv_ksize, strides=(1, 1), padding='same')(up1),
         x08,
     ], axis=channel_axis)
-    up2 = SEE_Block(up2, fire_id=11, squeeze=32, expand=128)
+    up2 = SEE_Block(up2, see_id=11, squeeze=32, expand=128)
 
     # US3
     up3 = concatenate([
         Conv2DTranspose(64, deconv_ksize, strides=(2, 2), padding='same')(up2),
         x05,
     ], axis=channel_axis)
-    up3 = SEE_Block(up3, fire_id=12, squeeze=16, expand=64)
+    up3 = SEE_Block(up3, see_id=12, squeeze=16, expand=64)
 
     # US4
     up4 = concatenate([
         Conv2DTranspose(32, deconv_ksize, strides=(2, 2), padding='same')(up3),
         x02,
     ], axis=channel_axis)
-    up4 = SEE_Block(up4, fire_id=13, squeeze=16, expand=32)
+    up4 = SEE_Block(up4, see_id=13, squeeze=16, expand=32)
     up4 = UpSampling2D(size=(2, 2))(up4)
     
     x = concatenate([up4, x01], axis=channel_axis)
