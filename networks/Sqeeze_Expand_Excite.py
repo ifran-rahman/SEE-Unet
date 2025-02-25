@@ -25,7 +25,7 @@ def squeeze_and_excite(x, filters, se_ratio=16):
     x = multiply([x, se])  
     
     return x
-see
+
 def SEE_Block(x, see_id, squeeze=16, expand=64, se_ratio=16):
     """ SEE Block with Unique Layer Naming """
     
