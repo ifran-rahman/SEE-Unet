@@ -24,12 +24,7 @@ git clone https://github.com/your-repo/SEE-Unet.git
 cd SEE-Unet
 ```
 
-### 2. Install dependencies:
-```sh
-pip install -r requirements.txt
-```
-
-### 3. Run the training script using the provided Jupyter Notebook:
+### 2. Run the training script using the provided Jupyter Notebook:
 ```sh
 jupyter notebook train.ipynb
 ```
