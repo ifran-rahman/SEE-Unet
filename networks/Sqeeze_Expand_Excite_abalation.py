@@ -9,47 +9,51 @@ from keras import backend as K
 from keras.layers import Conv2D, BatchNormalization, SeparableConv2D, concatenate, GlobalAveragePooling2D, Dense, Reshape, multiply
 from keras import backend as K
 
-def squeeze_and_excite(x, filters, se_ratio=32):
-    """ Squeeze-and-Excitation Block """
+# def squeeze_and_excite(x, filters, se_ratio=16):
+#     """ Squeeze-and-Excitation Block """
     
-    # print('filters', filters * 2)
-    se = GlobalAveragePooling2D()(x)
-    se = Dense(filters * 2 // se_ratio, activation='relu')(se)
-    se = Dense(filters, activation='sigmoid')(se)
+#     se = GlobalAveragePooling2D()(x)
+#     se = Dense(filters * 2 // se_ratio, activation='relu')(se)
+#     se = Dense(filters, activation='sigmoid')(se)
 
-    # Reshape for channel-wise scaling
-    channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
-    se_shape = [1, 1, filters] if channel_axis == -1 else [filters, 1, 1]
-    se = Reshape(se_shape)(se)
+#     # Reshape for channel-wise scaling
+#     channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
+#     se_shape = [1, 1, filters] if channel_axis == -1 else [filters, 1, 1]
+#     se = Reshape(se_shape)(se)
 
-    # Scale input features
-    x = multiply([x, se])  
+#     # Scale input features
+#     x = multiply([x, se])  
     
+#     return x
+
+# def SEE_Block(x, see_id, squeeze=16, expand=64, se_ratio=16):
+#     """ SEE Block with Unique Layer Naming """
+    
+#     # Generate unique name for each layer
+#     def unique_layer_name(name):
+#         return f"see{see_id}_{name}"
+
+#     channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
+
+#     # Squeeze Step
+#     squeezed = Conv2D(squeeze, (1, 1), activation='relu', padding='same', name=unique_layer_name("squeeze1x1"))(x)
+#     squeezed = BatchNormalization(axis=channel_axis, name=unique_layer_name("batchnorm"))(squeezed)
+
+#     # Expand Step
+#     expanded = SeparableConv2D(expand, (3, 3), activation='relu', padding='same', name=unique_layer_name("expand3x3"))(squeezed)
+
+#     # Apply Squeeze-and-Excitation Block
+#     x = squeeze_and_excite(expanded, expand)
+    
+#     return x
+
+def SEE_Block(x, see_id, squeeze=16, expand=64):
+    def unique(name): return f"basic{see_id}_{name}"
+    x = Conv2D(expand, (3, 3), activation='relu', padding='same', name=unique("conv1"))(x)
+    x = Conv2D(expand, (3, 3), activation='relu', padding='same', name=unique("conv2"))(x)
     return x
 
-def SEE_Block(x, see_id, squeeze=16, expand=64, se_ratio=16):
-    """ SEE Block with Unique Layer Naming """
-    
-    # Generate unique name for each layer
-    def unique_layer_name(name):
-        return f"see{see_id}_{name}"
-
-    channel_axis = 1 if K.image_data_format() == 'channels_first' else -1
-
-    # Squeeze Step
-    squeezed = Conv2D(squeeze, (1, 1), activation='relu', padding='same', name=unique_layer_name("squeeze1x1"))(x)
-    squeezed = BatchNormalization(axis=channel_axis, name=unique_layer_name("batchnorm"))(squeezed)
-
-    # Expand Step
-    expanded = SeparableConv2D(expand, (3, 3), activation='relu', padding='same', name=unique_layer_name("expand3x3"))(squeezed)
-
-    # Apply Squeeze-and-Excitation Block
-    x = squeeze_and_excite(expanded, expand)
-    
-    return x
-
-
-def SEE_Unet(inputs, num_classes=1, deconv_ksize=3, dropout=0.5, activation='sigmoid'):
+def SEE_Unet_abalation(inputs, num_classes=1, deconv_ksize=3, dropout=0.5, activation='sigmoid'):
     """
     :param inputs: input layer.
     :param num_classes: number of classes.
