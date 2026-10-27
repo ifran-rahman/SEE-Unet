@@ -20,7 +20,7 @@ To train the SEE-Unet model, follow these steps:
 
 ### 1. Clone the repository:
 ```sh
-git clone https://github.com/your-repo/SEE-Unet.git
+[git clone https://github.com/your-repo/SEE-Unet.git](https://github.com/ifran-rahman/SEE-Unet)
 cd SEE-Unet
 ```
 
